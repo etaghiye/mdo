@@ -61,6 +61,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     bool registered = prefs.getBool('registered') ?? false;
     bool loggedIn = prefs.getBool('loggedIn') ?? false;
 
+    _username = prefs.getString('username') ?? '';
+    _password = prefs.getString('password') ?? '';
+
     if (!registered) {
       emit(UnRegistered());
     }

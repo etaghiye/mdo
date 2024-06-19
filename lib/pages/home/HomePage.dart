@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mdo/pages/home/ApiScreen.dart';
 import 'package:mdo/pages/home/LoginInfoScreen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,12 +22,12 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    SharedPreferences.getInstance().then((prefs) {
-      prefs.remove('username');
-      prefs.remove('password');
-      prefs.remove('registered');
-      prefs.remove('loggedIn');
-    });
+    // SharedPreferences.getInstance().then((prefs) {
+    //   prefs.remove('username');
+    //   prefs.remove('password');
+    //   prefs.remove('registered');
+    //   prefs.remove('loggedIn');
+    // });
   }
 
 // -----------------------------------------------------------------------------
