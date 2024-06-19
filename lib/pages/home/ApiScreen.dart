@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-import '../../../models/CarMakes.dart';
-import '../../../services/HttpService.dart';
+import '../../models/CarMakes.dart';
+import '../../services/HttpService.dart';
 
-class ApiTab extends StatefulWidget {
-  const ApiTab({super.key});
+class ApiScreen extends StatefulWidget {
+  const ApiScreen({super.key});
 
   @override
-  State<ApiTab> createState() => _ApiTabState();
+  State<ApiScreen> createState() => _ApiScreenState();
 }
 
-class _ApiTabState extends State<ApiTab> {
+class _ApiScreenState extends State<ApiScreen> {
   CarMakes? _carMakes;
 
 // -----------------------------------------------------------------------------

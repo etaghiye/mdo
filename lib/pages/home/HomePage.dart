@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mdo/pages/home/tabs/ApiTab.dart';
-import 'package:mdo/pages/home/tabs/LoginInfoTab.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mdo/helpers/Enums.dart';
+import 'package:mdo/pages/home/ApiScreen.dart';
+import 'package:mdo/pages/home/LoginInfoScreen.dart';
+import 'package:mdo/pages/login/LoginScreen.dart';
+import 'package:mdo/pages/login/RegistrationScreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../models/LoginBloc.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -13,9 +20,25 @@ class _HomepageState extends State<Homepage> {
   int _currentIndex = 0;
 
   final List<Widget> _tabs = [
-    const ApiTab(),
-    const LoginInfotab(),
+    const ApiScreen(),
+    const LoginInfoScreen(),
+    const RegistrationScreen(),
+    const LoginScreen(),
   ];
+
+// -----------------------------------------------------------------------------
+//
+//
+  @override
+  void initState() {
+    super.initState();
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.remove('username');
+      prefs.remove('password');
+      prefs.remove('registered');
+      prefs.remove('loggedIn');
+    });
+  }
 
 // -----------------------------------------------------------------------------
 //
@@ -31,7 +54,7 @@ class _HomepageState extends State<Homepage> {
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: _tabs[_currentIndex],
+          child: _getScreen(),
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: const [
@@ -51,7 +74,35 @@ class _HomepageState extends State<Homepage> {
   void _onItemTapped(int index) {
     _currentIndex = index;
     setState(() {});
+  }
 
-    // Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LoginPage()));
+// -----------------------------------------------------------------------------
+//
+//
+  Widget _getScreen() {
+    if (_currentIndex == HomePageScreen.api.index) {
+      return _tabs[HomePageScreen.api.index];
+    }
+    //
+    else if (_currentIndex == HomePageScreen.loginInfo.index) {
+      return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+        if (state is UnRegistered) {
+          return _tabs[HomePageScreen.registration.index];
+        }
+        //
+        else if (state is LoggedOut) {
+          return _tabs[HomePageScreen.login.index];
+        }
+        //
+        else if (state is LoggedIn) {
+          return _tabs[HomePageScreen.loginInfo.index];
+        }
+
+        return const Center(child: Text('Something went wrong'));
+      });
+    }
+
+    //
+    return const Center(child: Text('Something went wrong'));
   }
 }

@@ -3,59 +3,39 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../helpers/Enums.dart';
 import '../../models/LoginBloc.dart';
-import 'LoginPage.dart';
 
-class RegistrationPage extends StatefulWidget {
-  const RegistrationPage({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<RegistrationPage> createState() => _RegistrationPageState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _RegistrationPageState extends State<RegistrationPage> {
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+// -----------------------------------------------------------------------------
+//
+//
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginState>(
-      builder: (context, state) {
-        if (state is UnRegistered) {
-          return GestureDetector(
-            onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
-            child: Scaffold(
-              appBar: AppBar(
-                backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-                title: const Text('Registration'),
-              ),
-              body: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 40),
-                      _getUserNameField(),
-                      const SizedBox(height: 20),
-                      _getPasswordField(),
-                      const SizedBox(height: 40),
-                      _getRegisterButton(),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        }
-        //
-        else {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (_) => const LoginPage()));
-        }
-
-        return const SizedBox();
-      },
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            const SizedBox(height: 40),
+            _getUserNameField(),
+            const SizedBox(height: 20),
+            _getPasswordField(),
+            const SizedBox(height: 40),
+            _getRegisterButton(),
+          ],
+        ),
+      ),
     );
   }
 
@@ -73,6 +53,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         if (value == null || value.isEmpty) {
           return 'Please enter your username';
         }
+
         return null;
       },
     );
@@ -93,6 +74,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         if (value == null || value.isEmpty) {
           return 'Please enter your password';
         }
+
         return null;
       },
     );
@@ -103,19 +85,19 @@ class _RegistrationPageState extends State<RegistrationPage> {
 //
   Widget _getRegisterButton() {
     return ElevatedButton(
-      onPressed: _onRegisterTap,
-      child: const Text('Register'),
+      onPressed: _login,
+      child: const Text('Login'),
     );
   }
 
 // -----------------------------------------------------------------------------
 //
 //
-  void _onRegisterTap() async {
+  void _login() async {
     if (_formKey.currentState?.validate() ?? false) {
       context.read<LoginBloc>().setUsername(_usernameController.text);
       context.read<LoginBloc>().setPassword(_passwordController.text);
-      context.read<LoginBloc>().add(LoginEvent.register);
+      context.read<LoginBloc>().add(LoginEvent.logIn);
     }
   }
 }

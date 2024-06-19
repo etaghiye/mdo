@@ -1,19 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mdo/models/LoginBloc.dart';
 import 'package:mdo/pages/home/HomePage.dart';
-import 'package:mdo/pages/login/LoginPage.dart';
-import 'package:mdo/pages/login/RegistrationPage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import 'helpers/Routes.dart';
+import 'models/LoginBloc.dart';
 
 void main() {
-  SharedPreferences.getInstance().then((prefs) {
-    prefs.remove('username');
-    prefs.remove('password');
-  });
-
   runApp(const MyApp());
 }
 
@@ -33,11 +24,6 @@ class MyApp extends StatelessWidget {
         child: const Homepage(),
       ),
       debugShowCheckedModeBanner: false,
-      routes: {
-        Routes.homePage: (_) => const Homepage(),
-        Routes.registrationPage: (_) => const RegistrationPage(),
-        Routes.loginPage: (_) => const LoginPage(),
-      },
     );
   }
 }

@@ -1,6 +1,8 @@
-enum HomePageTab {
+enum HomePageScreen {
   api,
   loginInfo,
+  registration,
+  login,
 }
 
 enum LoginEvent {

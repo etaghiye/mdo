@@ -53,6 +53,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     _password = password;
   }
 
+  String get username => _username;
+  String get password => _password;
+
   void _checkLoginStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool registered = prefs.getBool('registered') ?? false;
