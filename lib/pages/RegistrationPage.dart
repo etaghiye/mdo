@@ -70,6 +70,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
 //
   Widget _getPasswordField() {
     return TextFormField(
+      obscureText: true,
       controller: _passwordController,
       decoration: const InputDecoration(
         labelText: 'Password',

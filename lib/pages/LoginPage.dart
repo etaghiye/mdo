@@ -13,7 +13,18 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  String _userName = '';
+  String _password = '';
 
+  @override
+  void initState() {
+    super.initState();
+    loadCredentials();
+  }
+
+// -----------------------------------------------------------------------------
+//
+//
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -57,6 +68,10 @@ class _LoginPageState extends State<LoginPage> {
         if (value == null || value.isEmpty) {
           return 'Please enter your username';
         }
+        //
+        else if (value != _userName) {
+          return 'Wrong username';
+        }
         return null;
       },
     );
@@ -67,6 +82,7 @@ class _LoginPageState extends State<LoginPage> {
 //
   Widget _getPasswordField() {
     return TextFormField(
+      obscureText: true,
       controller: _passwordController,
       decoration: const InputDecoration(
         labelText: 'Password',
@@ -76,6 +92,11 @@ class _LoginPageState extends State<LoginPage> {
         if (value == null || value.isEmpty) {
           return 'Please enter your password';
         }
+        //
+        else if (value != _password) {
+          return 'Wrong password';
+        }
+
         return null;
       },
     );
@@ -87,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _getRegisterButton() {
     return ElevatedButton(
       onPressed: _login,
-      child: const Text('Register'),
+      child: const Text('Login'),
     );
   }
 
@@ -96,17 +117,19 @@ class _LoginPageState extends State<LoginPage> {
 //
   void _login() async {
     if (_formKey.currentState?.validate() ?? false) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      var userName = prefs.getString('username') ?? '';
-      var password = prefs.getString('password') ?? '';
-
-      if (userName == _usernameController.text &&
-          password == _passwordController.text) {
-        if (mounted) {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (_) => const Homepage()));
-        }
+      if (mounted) {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (_) => const Homepage()));
       }
     }
+  }
+
+// -----------------------------------------------------------------------------
+//
+//
+  void loadCredentials() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _userName = prefs.getString('username') ?? '';
+    _password = prefs.getString('password') ?? '';
   }
 }
