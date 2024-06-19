@@ -16,6 +16,21 @@ class StartPage extends StatefulWidget {
 
 class _StartPageState extends State<StartPage> {
   @override
+  void initState() {
+    super.initState();
+
+    // SharedPreferences.getInstance().then((prefs) {
+    //   prefs.remove('username');
+    //   prefs.remove('password');
+    //   prefs.remove('registered');
+    //   prefs.remove('loggedIn');
+    // });
+  }
+
+// -----------------------------------------------------------------------------
+//
+//
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
       if (state is UnRegistered) {

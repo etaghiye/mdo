@@ -22,12 +22,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // SharedPreferences.getInstance().then((prefs) {
-    //   prefs.remove('username');
-    //   prefs.remove('password');
-    //   prefs.remove('registered');
-    //   prefs.remove('loggedIn');
-    // });
   }
 
 // -----------------------------------------------------------------------------
