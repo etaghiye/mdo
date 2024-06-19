@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mdo/helpers/Enums.dart';
 import 'package:mdo/pages/home/ApiScreen.dart';
 import 'package:mdo/pages/home/LoginInfoScreen.dart';
-import 'package:mdo/pages/login/LoginScreen.dart';
-import 'package:mdo/pages/login/RegistrationScreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../models/LoginBloc.dart';
-
-class Homepage extends StatefulWidget {
-  const Homepage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
+  final List<Widget> _screens = [
+    const ApiScreen(),
+    const LoginInfoScreen(),
+  ];
 
 // -----------------------------------------------------------------------------
 //
@@ -24,6 +23,12 @@ class _HomepageState extends State<Homepage> {
   @override
   void initState() {
     super.initState();
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.remove('username');
+      prefs.remove('password');
+      prefs.remove('registered');
+      prefs.remove('loggedIn');
+    });
   }
 
 // -----------------------------------------------------------------------------
@@ -40,7 +45,7 @@ class _HomepageState extends State<Homepage> {
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: _getScreen(),
+          child: _screens[_currentIndex],
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: const [
@@ -60,43 +65,5 @@ class _HomepageState extends State<Homepage> {
   void _onItemTapped(int index) {
     _currentIndex = index;
     setState(() {});
-  }
-
-// -----------------------------------------------------------------------------
-//
-//
-  Widget _getScreen() {
-    if (_currentIndex == HomePageScreen.api.index) {
-      return const ApiScreen();
-    }
-    //
-    else if (_currentIndex == HomePageScreen.loginInfo.index) {
-      return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
-        if (state is UnRegistered) {
-          return RegistrationScreen(onRegisterTap: (username, password) {
-            context.read<LoginBloc>().setUsername(username);
-            context.read<LoginBloc>().setPassword(password);
-            context.read<LoginBloc>().add(LoginEvent.register);
-          });
-        }
-        //
-        else if (state is LoggedIn) {
-          return const LoginInfoScreen();
-        }
-        //
-        return LoginScreen(
-          key: UniqueKey(),
-          setError: state is WrongLogin ? true : false,
-          onLoginTap: (username, password) {
-            context.read<LoginBloc>().setUsername(username);
-            context.read<LoginBloc>().setPassword(password);
-            context.read<LoginBloc>().add(LoginEvent.logIn);
-          },
-        );
-      });
-    }
-
-    //
-    return const Center(child: Text('Something went wrong'));
   }
 }

@@ -1,33 +1,48 @@
 import 'package:flutter/material.dart';
 
-class RegistrationScreen extends StatefulWidget {
-  final void Function(String username, String password) onRegisterTap;
-  const RegistrationScreen({super.key, required this.onRegisterTap});
+class LoginPage extends StatefulWidget {
+  final void Function(String username, String password) onLoginTap;
+  final bool setError;
+  const LoginPage({super.key, required this.onLoginTap, this.setError = false});
 
   @override
-  State<RegistrationScreen> createState() => _RegistrationScreenState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen> {
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+// -----------------------------------------------------------------------------
+//
+//
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            const SizedBox(height: 40),
-            _getUserNameField(),
-            const SizedBox(height: 20),
-            _getPasswordField(),
-            const SizedBox(height: 40),
-            _getRegisterButton(),
-          ],
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: const Text('Login'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              const SizedBox(height: 40),
+              _getUserNameField(),
+              const SizedBox(height: 20),
+              _getPasswordField(),
+              const SizedBox(height: 40),
+              if (widget.setError)
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: Text('username or password incorrect'),
+                ),
+              _getRegisterButton(),
+            ],
+          ),
         ),
       ),
     );
@@ -67,6 +82,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         if (value == null || value.isEmpty) {
           return 'Please enter your password';
         }
+
         return null;
       },
     );
@@ -77,17 +93,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 //
   Widget _getRegisterButton() {
     return ElevatedButton(
-      onPressed: _onRegisterTap,
-      child: const Text('Register'),
+      onPressed: _login,
+      child: const Text('Login'),
     );
   }
 
 // -----------------------------------------------------------------------------
 //
 //
-  void _onRegisterTap() async {
+  void _login() async {
     if (_formKey.currentState?.validate() ?? false) {
-      widget.onRegisterTap(_usernameController.text, _passwordController.text);
+      widget.onLoginTap(_usernameController.text, _passwordController.text);
     }
   }
 }
