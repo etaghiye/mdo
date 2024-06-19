@@ -5,7 +5,6 @@ import 'package:mdo/pages/home/ApiScreen.dart';
 import 'package:mdo/pages/home/LoginInfoScreen.dart';
 import 'package:mdo/pages/login/LoginScreen.dart';
 import 'package:mdo/pages/login/RegistrationScreen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/LoginBloc.dart';
 
@@ -25,12 +24,6 @@ class _HomepageState extends State<Homepage> {
   @override
   void initState() {
     super.initState();
-    SharedPreferences.getInstance().then((prefs) {
-      prefs.remove('username');
-      prefs.remove('password');
-      prefs.remove('registered');
-      prefs.remove('loggedIn');
-    });
   }
 
 // -----------------------------------------------------------------------------
