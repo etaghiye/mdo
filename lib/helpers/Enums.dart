@@ -1,4 +1,10 @@
 enum HomePageTab {
   api,
-  login,
+  loginInfo,
+}
+
+enum LoginEvent {
+  register,
+  logIn,
+  loggedOut,
 }

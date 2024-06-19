@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mdo/helpers/Enums.dart';
 import 'package:mdo/pages/home/tabs/ApiTab.dart';
-import 'package:mdo/pages/login/LoginPage.dart';
+import 'package:mdo/pages/home/tabs/LoginInfoTab.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -15,6 +14,7 @@ class _HomepageState extends State<Homepage> {
 
   final List<Widget> _tabs = [
     const ApiTab(),
+    const LoginInfotab(),
   ];
 
 // -----------------------------------------------------------------------------
@@ -50,15 +50,8 @@ class _HomepageState extends State<Homepage> {
 //
   void _onItemTapped(int index) {
     _currentIndex = index;
+    setState(() {});
 
-    if (_currentIndex == HomePageTab.api.index) {
-      setState(() {});
-    }
-    //
-    else if (_currentIndex == HomePageTab.login.index) {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => const LoginPage()));
-      return;
-    }
+    // Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LoginPage()));
   }
 }

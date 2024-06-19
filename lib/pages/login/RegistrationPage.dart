@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../helpers/Enums.dart';
+import '../../models/LoginBloc.dart';
 import 'LoginPage.dart';
 
 class RegistrationPage extends StatefulWidget {
@@ -88,7 +90,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
 //
   Widget _getRegisterButton() {
     return ElevatedButton(
-      onPressed: _register,
+      onPressed: _onRegisterTap,
       child: const Text('Register'),
     );
   }
@@ -96,14 +98,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
 // -----------------------------------------------------------------------------
 //
 //
-  void _register() async {
+  void _onRegisterTap() async {
     if (_formKey.currentState?.validate() ?? false) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('username', _usernameController.text);
-      await prefs.setString('password', _passwordController.text);
-
-      print('Username: ${_usernameController.text}');
-      print('Password: ${_passwordController.text}');
+      context.read<LoginBloc>().setUsername(_usernameController.text);
+      context.read<LoginBloc>().setPassword(_passwordController.text);
+      context.read<LoginBloc>().add(LoginEvent.register);
 
       if (mounted) {
         Navigator.of(context)
