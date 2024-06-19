@@ -91,11 +91,15 @@ class _HomepageState extends State<Homepage> {
           return const LoginInfoScreen();
         }
         //
-        return LoginScreen(onLoginTap: (username, password) {
-          context.read<LoginBloc>().setUsername(username);
-          context.read<LoginBloc>().setPassword(password);
-          context.read<LoginBloc>().add(LoginEvent.logIn);
-        });
+        return LoginScreen(
+          key: UniqueKey(),
+          setError: state is WrongLogin ? true : false,
+          onLoginTap: (username, password) {
+            context.read<LoginBloc>().setUsername(username);
+            context.read<LoginBloc>().setPassword(password);
+            context.read<LoginBloc>().add(LoginEvent.logIn);
+          },
+        );
       });
     }
 

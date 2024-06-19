@@ -16,6 +16,7 @@ class WrongLogin extends LoginState {}
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   String _username = '';
   String _password = '';
+  bool _isLoginError = false;
 
   LoginBloc() : super(LoggedOut()) {
     on<LoginEvent>((event, emit) async {

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
   final void Function(String username, String password) onLoginTap;
-  const LoginScreen({super.key, required this.onLoginTap});
+  final bool setError;
+  const LoginScreen(
+      {super.key, required this.onLoginTap, this.setError = false});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -29,6 +31,11 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 20),
             _getPasswordField(),
             const SizedBox(height: 40),
+            if (widget.setError)
+              const Padding(
+                padding: EdgeInsets.only(bottom: 20),
+                child: Text('username or password incorrect'),
+              ),
             _getRegisterButton(),
           ],
         ),
