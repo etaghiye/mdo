@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:mdo/pages/home/HomePage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'LoginPage.dart';
-
-class RegistrationPage extends StatefulWidget {
-  const RegistrationPage({super.key, required this.title});
-
-  final String title;
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<RegistrationPage> createState() => _RegistrationPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _RegistrationPageState extends State<RegistrationPage> {
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  String _userName = '';
+  String _password = '';
 
+  @override
+  void initState() {
+    super.initState();
+    loadCredentials();
+  }
+
+// -----------------------------------------------------------------------------
+//
+//
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -24,7 +32,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(widget.title),
+          title: const Text('Login'),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -60,6 +68,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
         if (value == null || value.isEmpty) {
           return 'Please enter your username';
         }
+        //
+        else if (value != _userName) {
+          return 'Wrong username';
+        }
         return null;
       },
     );
@@ -80,6 +92,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
         if (value == null || value.isEmpty) {
           return 'Please enter your password';
         }
+        //
+        else if (value != _password) {
+          return 'Wrong password';
+        }
+
         return null;
       },
     );
@@ -90,27 +107,29 @@ class _RegistrationPageState extends State<RegistrationPage> {
 //
   Widget _getRegisterButton() {
     return ElevatedButton(
-      onPressed: _register,
-      child: const Text('Register'),
+      onPressed: _login,
+      child: const Text('Login'),
     );
   }
 
 // -----------------------------------------------------------------------------
 //
 //
-  void _register() async {
+  void _login() async {
     if (_formKey.currentState?.validate() ?? false) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('username', _usernameController.text);
-      await prefs.setString('password', _passwordController.text);
-
-      print('Username: ${_usernameController.text}');
-      print('Password: ${_passwordController.text}');
-
       if (mounted) {
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (_) => const LoginPage()));
+            .push(MaterialPageRoute(builder: (_) => const Homepage()));
       }
     }
+  }
+
+// -----------------------------------------------------------------------------
+//
+//
+  void loadCredentials() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _userName = prefs.getString('username') ?? '';
+    _password = prefs.getString('password') ?? '';
   }
 }

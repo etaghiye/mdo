@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mdo/helpers/Enums.dart';
-import 'package:mdo/models/CarMakes.dart';
-import 'package:mdo/pages/LoginPage.dart';
-
-import '../services/HttpService.dart';
+import 'package:mdo/pages/home/tabs/ApiTab.dart';
+import 'package:mdo/pages/login/LoginPage.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -14,16 +12,10 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   int _currentIndex = 0;
-  CarMakes? _carMakes;
 
-// -----------------------------------------------------------------------------
-//
-//
-  @override
-  void initState() {
-    super.initState();
-    _loadCarMakes();
-  }
+  final List<Widget> _tabs = [
+    const ApiTab(),
+  ];
 
 // -----------------------------------------------------------------------------
 //
@@ -39,7 +31,7 @@ class _HomepageState extends State<Homepage> {
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: _getApiView(),
+          child: _tabs[_currentIndex],
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: const [
@@ -51,33 +43,6 @@ class _HomepageState extends State<Homepage> {
         ),
       ),
     );
-  }
-
-// -----------------------------------------------------------------------------
-//
-//
-  Widget _getApiView() {
-    if (_carMakes == null) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    return ListView.builder(
-      itemCount: _carMakes!.count,
-      itemBuilder: (BuildContext context, int index) {
-        return Text(_carMakes!.results![index].makeName!);
-      },
-    );
-  }
-
-// -----------------------------------------------------------------------------
-//
-//
-  void _loadCarMakes() {
-    _carMakes = null;
-    HttpService.getCarMakes().then((value) {
-      _carMakes = value;
-      setState(() {});
-    });
   }
 
 // -----------------------------------------------------------------------------
