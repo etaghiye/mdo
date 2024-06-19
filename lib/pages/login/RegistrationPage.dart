@@ -17,7 +17,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        // backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Registration'),
       ),
       body: Padding(
@@ -47,7 +47,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
       controller: _usernameController,
       decoration: const InputDecoration(
         labelText: 'Username',
-        border: OutlineInputBorder(),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -67,7 +66,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
       controller: _passwordController,
       decoration: const InputDecoration(
         labelText: 'Password',
-        border: OutlineInputBorder(),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {

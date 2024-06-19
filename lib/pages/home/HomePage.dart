@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
       onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          // backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: const Text('Home'),
         ),
         body: Padding(

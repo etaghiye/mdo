@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        // backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Login'),
       ),
       body: Padding(
@@ -56,7 +56,6 @@ class _LoginPageState extends State<LoginPage> {
       controller: _usernameController,
       decoration: const InputDecoration(
         labelText: 'Username',
-        border: OutlineInputBorder(),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -76,7 +75,6 @@ class _LoginPageState extends State<LoginPage> {
       controller: _passwordController,
       decoration: const InputDecoration(
         labelText: 'Password',
-        border: OutlineInputBorder(),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
