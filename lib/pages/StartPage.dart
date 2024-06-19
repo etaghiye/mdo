@@ -41,6 +41,10 @@ class _StartPageState extends State<StartPage> {
         return _getHomePage();
       }
       //
+      else if (state is Loading) {
+        return const Center(child: CircularProgressIndicator());
+      }
+      //
       return _getLoginPage(state);
     });
   }

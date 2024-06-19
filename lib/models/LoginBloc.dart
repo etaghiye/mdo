@@ -5,6 +5,8 @@ import '../helpers/Enums.dart';
 
 abstract class LoginState {}
 
+class Loading extends LoginState {}
+
 class UnRegistered extends LoginState {}
 
 class LoggedOut extends LoginState {}
@@ -17,7 +19,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   String _username = '';
   String _password = '';
 
-  LoginBloc() : super(UnRegistered()) {
+  LoginBloc() : super(Loading()) {
     on<LoginEvent>((event, emit) async {
       if (event == LoginEvent.register) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
