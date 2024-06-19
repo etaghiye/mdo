@@ -29,6 +29,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit(LoggedOut());
       }
       //
+      else if (event == LoginEvent.unregister) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.remove('username');
+        prefs.remove('password');
+        prefs.remove('registered');
+        prefs.remove('loggedIn');
+        emit(UnRegistered());
+      }
+      //
       else if (event == LoginEvent.logIn) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var username = prefs.getString('username');

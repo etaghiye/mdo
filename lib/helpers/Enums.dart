@@ -9,4 +9,5 @@ enum LoginEvent {
   register,
   logIn,
   loggedOut,
+  unregister,
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mdo/models/LoginBloc.dart';
 
+import '../../helpers/Enums.dart';
+
 class LoginInfoScreen extends StatefulWidget {
   const LoginInfoScreen({super.key});
 
@@ -22,8 +24,20 @@ class _LoginInfoScreenState extends State<LoginInfoScreen> {
           Text('Username: $username', style: const TextStyle(fontSize: 18)),
           const SizedBox(height: 20),
           Text('Password: $password', style: const TextStyle(fontSize: 18)),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: _unregister,
+            child: const Text('Unregister'),
+          ),
         ],
       ),
     );
+  }
+
+// -----------------------------------------------------------------------------
+//
+//
+  void _unregister() {
+    context.read<LoginBloc>().add(LoginEvent.unregister);
   }
 }

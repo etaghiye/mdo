@@ -18,13 +18,6 @@ class _StartPageState extends State<StartPage> {
   @override
   void initState() {
     super.initState();
-
-    // SharedPreferences.getInstance().then((prefs) {
-    //   prefs.remove('username');
-    //   prefs.remove('password');
-    //   prefs.remove('registered');
-    //   prefs.remove('loggedIn');
-    // });
   }
 
 // -----------------------------------------------------------------------------
