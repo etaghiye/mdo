@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mdo/models/CarMakes.dart';
+
+import '../services/HttpService.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -8,6 +11,23 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  CarMakes? _carMakes;
+
+// -----------------------------------------------------------------------------
+//
+//
+  @override
+  void initState() {
+    super.initState();
+    HttpService.getCarMakes().then((value) {
+      _carMakes = value;
+      setState(() {});
+    });
+  }
+
+// -----------------------------------------------------------------------------
+//
+//
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -17,8 +37,9 @@ class _HomepageState extends State<Homepage> {
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: const Text('Home'),
         ),
-        body: const Padding(
+        body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20),
+          child: _getMainView(),
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: const [
@@ -27,6 +48,22 @@ class _HomepageState extends State<Homepage> {
           ],
         ),
       ),
+    );
+  }
+
+// -----------------------------------------------------------------------------
+//
+//
+  Widget _getMainView() {
+    if (_carMakes == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return ListView.builder(
+      itemCount: _carMakes!.count,
+      itemBuilder: (BuildContext context, int index) {
+        return Text(_carMakes!.results![index].makeName!);
+      },
     );
   }
 }
