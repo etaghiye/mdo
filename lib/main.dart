@@ -4,10 +4,16 @@ import 'package:mdo/models/LoginBloc.dart';
 import 'package:mdo/pages/home/HomePage.dart';
 import 'package:mdo/pages/login/LoginPage.dart';
 import 'package:mdo/pages/login/RegistrationPage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'helpers/Routes.dart';
 
 void main() {
+  SharedPreferences.getInstance().then((prefs) {
+    prefs.remove('username');
+    prefs.remove('password');
+  });
+
   runApp(const MyApp());
 }
 

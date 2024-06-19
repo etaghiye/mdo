@@ -19,30 +19,43 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: const Text('Registration'),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                const SizedBox(height: 40),
-                _getUserNameField(),
-                const SizedBox(height: 20),
-                _getPasswordField(),
-                const SizedBox(height: 40),
-                _getRegisterButton(),
-              ],
+    return BlocBuilder<LoginBloc, LoginState>(
+      builder: (context, state) {
+        if (state is UnRegistered) {
+          return GestureDetector(
+            onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
+            child: Scaffold(
+              appBar: AppBar(
+                backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                title: const Text('Registration'),
+              ),
+              body: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 40),
+                      _getUserNameField(),
+                      const SizedBox(height: 20),
+                      _getPasswordField(),
+                      const SizedBox(height: 40),
+                      _getRegisterButton(),
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
+          );
+        }
+        //
+        else {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (_) => const LoginPage()));
+        }
+
+        return const SizedBox();
+      },
     );
   }
 
@@ -103,11 +116,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
       context.read<LoginBloc>().setUsername(_usernameController.text);
       context.read<LoginBloc>().setPassword(_passwordController.text);
       context.read<LoginBloc>().add(LoginEvent.register);
-
-      if (mounted) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (_) => const LoginPage()));
-      }
     }
   }
 }
