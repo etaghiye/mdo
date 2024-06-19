@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mdo/helpers/Enums.dart';
 import 'package:mdo/models/CarMakes.dart';
+import 'package:mdo/pages/LoginPage.dart';
 
 import '../services/HttpService.dart';
 
@@ -11,6 +13,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  int _currentIndex = 0;
   CarMakes? _carMakes;
 
 // -----------------------------------------------------------------------------
@@ -19,10 +22,7 @@ class _HomepageState extends State<Homepage> {
   @override
   void initState() {
     super.initState();
-    HttpService.getCarMakes().then((value) {
-      _carMakes = value;
-      setState(() {});
-    });
+    _loadCarMakes();
   }
 
 // -----------------------------------------------------------------------------
@@ -38,14 +38,16 @@ class _HomepageState extends State<Homepage> {
           title: const Text('Home'),
         ),
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: _getMainView(),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: _getApiView(),
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(label: 'Api', icon: Icon(Icons.api)),
             BottomNavigationBarItem(label: 'Login', icon: Icon(Icons.login)),
           ],
+          currentIndex: _currentIndex,
+          onTap: _onItemTapped,
         ),
       ),
     );
@@ -54,7 +56,7 @@ class _HomepageState extends State<Homepage> {
 // -----------------------------------------------------------------------------
 //
 //
-  Widget _getMainView() {
+  Widget _getApiView() {
     if (_carMakes == null) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -65,5 +67,33 @@ class _HomepageState extends State<Homepage> {
         return Text(_carMakes!.results![index].makeName!);
       },
     );
+  }
+
+// -----------------------------------------------------------------------------
+//
+//
+  void _loadCarMakes() {
+    _carMakes = null;
+    HttpService.getCarMakes().then((value) {
+      _carMakes = value;
+      setState(() {});
+    });
+  }
+
+// -----------------------------------------------------------------------------
+//
+//
+  void _onItemTapped(int index) {
+    _currentIndex = index;
+
+    if (_currentIndex == HomePageTab.api.index) {
+      setState(() {});
+    }
+    //
+    else if (_currentIndex == HomePageTab.login.index) {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (_) => const LoginPage()));
+      return;
+    }
   }
 }

@@ -1,0 +1,4 @@
+enum HomePageTab {
+  api,
+  login,
+}
