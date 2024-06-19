@@ -19,13 +19,6 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   int _currentIndex = 0;
 
-  final List<Widget> _tabs = [
-    const ApiScreen(),
-    const LoginInfoScreen(),
-    const RegistrationScreen(),
-    const LoginScreen(),
-  ];
-
 // -----------------------------------------------------------------------------
 //
 //
@@ -81,24 +74,28 @@ class _HomepageState extends State<Homepage> {
 //
   Widget _getScreen() {
     if (_currentIndex == HomePageScreen.api.index) {
-      return _tabs[HomePageScreen.api.index];
+      return const ApiScreen();
     }
     //
     else if (_currentIndex == HomePageScreen.loginInfo.index) {
       return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
         if (state is UnRegistered) {
-          return _tabs[HomePageScreen.registration.index];
-        }
-        //
-        else if (state is LoggedOut) {
-          return _tabs[HomePageScreen.login.index];
+          return RegistrationScreen(onRegisterTap: (username, password) {
+            context.read<LoginBloc>().setUsername(username);
+            context.read<LoginBloc>().setPassword(password);
+            context.read<LoginBloc>().add(LoginEvent.register);
+          });
         }
         //
         else if (state is LoggedIn) {
-          return _tabs[HomePageScreen.loginInfo.index];
+          return const LoginInfoScreen();
         }
-
-        return const Center(child: Text('Something went wrong'));
+        //
+        return LoginScreen(onLoginTap: (username, password) {
+          context.read<LoginBloc>().setUsername(username);
+          context.read<LoginBloc>().setPassword(password);
+          context.read<LoginBloc>().add(LoginEvent.logIn);
+        });
       });
     }
 

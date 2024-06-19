@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../helpers/Enums.dart';
-import '../../models/LoginBloc.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final void Function(String username, String password) onLoginTap;
+  const LoginScreen({super.key, required this.onLoginTap});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -53,7 +50,6 @@ class _LoginScreenState extends State<LoginScreen> {
         if (value == null || value.isEmpty) {
           return 'Please enter your username';
         }
-
         return null;
       },
     );
@@ -95,9 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
 //
   void _login() async {
     if (_formKey.currentState?.validate() ?? false) {
-      context.read<LoginBloc>().setUsername(_usernameController.text);
-      context.read<LoginBloc>().setPassword(_passwordController.text);
-      context.read<LoginBloc>().add(LoginEvent.logIn);
+      widget.onLoginTap(_usernameController.text, _passwordController.text);
     }
   }
 }

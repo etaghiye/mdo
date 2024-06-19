@@ -14,16 +14,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return BlocProvider(
+      create: (_) => LoginBloc(),
+      child: MaterialApp(
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: const Homepage(),
+        debugShowCheckedModeBanner: false,
       ),
-      home: BlocProvider(
-        create: (_) => LoginBloc(),
-        child: const Homepage(),
-      ),
-      debugShowCheckedModeBanner: false,
     );
   }
 }

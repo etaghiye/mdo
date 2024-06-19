@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../helpers/Enums.dart';
-import '../../models/LoginBloc.dart';
 
 class RegistrationScreen extends StatefulWidget {
-  const RegistrationScreen({super.key});
+  final void Function(String username, String password) onRegisterTap;
+  const RegistrationScreen({super.key, required this.onRegisterTap});
 
   @override
   State<RegistrationScreen> createState() => _RegistrationScreenState();
@@ -90,9 +87,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 //
   void _onRegisterTap() async {
     if (_formKey.currentState?.validate() ?? false) {
-      context.read<LoginBloc>().setUsername(_usernameController.text);
-      context.read<LoginBloc>().setPassword(_passwordController.text);
-      context.read<LoginBloc>().add(LoginEvent.register);
+      widget.onRegisterTap(_usernameController.text, _passwordController.text);
     }
   }
 }
