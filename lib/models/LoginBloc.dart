@@ -16,9 +16,8 @@ class WrongLogin extends LoginState {}
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   String _username = '';
   String _password = '';
-  bool _isLoginError = false;
 
-  LoginBloc() : super(LoggedOut()) {
+  LoginBloc() : super(UnRegistered()) {
     on<LoginEvent>((event, emit) async {
       if (event == LoginEvent.register) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
